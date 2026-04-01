@@ -1,0 +1,15 @@
+function preload(){
+  img = loadImage("");
+}
+
+function setup(){
+  loadPixels();
+  img.loadPixels();
+  img.updatePixels();
+  updatePxels();
+}
+
+function draw(){
+  image(img, 100, 100, 400, 400);
+
+}
