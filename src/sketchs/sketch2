@@ -1,5 +1,5 @@
 function preload(){
-  img = loadImage("");
+  img = loadImage("img/BatMandark.jpg");
 }
 
 function setup(){
@@ -13,3 +13,4 @@ function draw(){
   image(img, 100, 100, 400, 400);
 
 }
+new p5(sketch2);
