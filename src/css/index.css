@@ -454,6 +454,24 @@ body::selection {
   transform: scale(1.05);
 }
 
+.btn-secondary {
+  padding: 0.5rem 1.25rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
 .btn-run-active {
   background-color: #16a34a !important;
 }
@@ -489,26 +507,35 @@ body::selection {
 
 .btn-fav {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 10;
-  padding: 0.5rem;
-  border-radius: 9999px;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  border: none;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: white;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .btn-fav:hover {
   transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .btn-fav svg.filled {
-  fill: #ef4444;
-  color: #ef4444;
+  fill: #f43f5e;
+  color: #f43f5e;
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.4));
 }
 
 .project-run-overlay {
@@ -616,6 +643,91 @@ body::selection {
   text-align: center;
   padding: 6rem 0;
   opacity: 0.4;
+}
+
+/* Lab Lab Workspace */
+.lab-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2rem;
+}
+
+.lab-stage-container {
+  background-color: #000;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  position: relative;
+}
+
+.lab-canvas-mount canvas {
+  display: block;
+}
+
+.lab-controls-panel {
+  background-color: var(--bg-sidebar);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.lab-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  font-weight: bold;
+}
+
+.control-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.control-value {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.control-input {
+  width: 100%;
+  accent-color: var(--indigo-500);
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+.control-input[type="range"] {
+  height: 4px;
 }
 
 /* Utilities */

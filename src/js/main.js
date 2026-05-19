@@ -51,6 +51,8 @@ const navigateTo = (path) => {
   renderView();
 };
 
+window.navigateTo = navigateTo;
+
 window.addEventListener('popstate', () => {
   currentPath = window.location.pathname;
   renderView();
@@ -113,6 +115,9 @@ const renderView = () => {
   } else if (currentPath.startsWith('/category/')) {
     const categoryId = currentPath.split('/').pop();
     renderCategoryDetailView(categoryId);
+  } else if (currentPath.startsWith('/project/')) {
+    const projectId = currentPath.split('/').pop();
+    renderProjectDetailView(projectId);
   } else if (currentPath === '/favorites') {
     renderFavoritesView();
   }
@@ -121,22 +126,16 @@ const renderView = () => {
 const createProjectCard = (project) => {
   const isFav = favorites.includes(project.id);
   const card = document.createElement('div');
-  card.className = "simple-card project-card";
+  card.className = "simple-card project-card cursor-pointer";
+  card.onclick = () => navigateTo(`/project/${project.id}`);
   
   card.innerHTML = `
     <div class="project-media-wrapper">
       <div id="preview-container-${project.id}" class="project-preview"></div>
-      <div id="canvas-container-${project.id}" class="project-canvas"></div>
       
       <button class="btn-fav">
-        <svg class="w-5 h-5 ${isFav ? 'filled' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+        <svg class="w-5 h-5 ${isFav ? 'filled' : ''}" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
       </button>
-
-      <div class="project-run-overlay">
-        <button class="btn-run">
-          Run Interactive
-        </button>
-      </div>
     </div>
 
     <div class="project-body">
@@ -149,36 +148,175 @@ const createProjectCard = (project) => {
       <p class="project-desc">"${project.description}"</p>
       
       <div class="project-footer">
-        <span>Source: Local JS</span>
+        <span>Click to enter Lab</span>
         <span class="status-indicator">
           <span class="dot dot-green"></span>
-          Optimized
+          Ready
         </span>
       </div>
     </div>
   `;
 
-  const runBtn = card.querySelector('.btn-run');
   const favBtn = card.querySelector('.btn-fav');
-  const previewContainer = card.querySelector(`#preview-container-${project.id}`);
-  const canvasContainer = card.querySelector(`#canvas-container-${project.id}`);
 
   favBtn.onclick = (e) => {
     e.stopPropagation();
-    toggleFavorite(project.id);
-  };
-
-  runBtn.onclick = () => {
-    if (activeP5Instance) activeP5Instance.remove();
-    // Stop and hide preview
-    previewContainer.style.display = 'none';
-    canvasContainer.style.pointerEvents = 'auto';
-    activeP5Instance = new p5(project.sketch, canvasContainer);
-    runBtn.textContent = 'Active';
-    runBtn.classList.add('btn-run-active');
+    const isCurrentlyFav = favorites.includes(project.id);
+    if (isCurrentlyFav) {
+      favorites = favorites.filter(f => f !== project.id);
+      favBtn.querySelector('svg').classList.remove('filled');
+      favBtn.querySelector('svg').setAttribute('fill', 'none');
+    } else {
+      favorites.push(project.id);
+      favBtn.querySelector('svg').classList.add('filled');
+      favBtn.querySelector('svg').setAttribute('fill', 'currentColor');
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    
+    // Update sidebar without full re-render if possible
+    renderSidebar();
+    if (projectCountEl) {
+        projectCountEl.textContent = `${PROJECTS.length} Total Experiments`;
+    }
   };
 
   return card;
+};
+
+const renderProjectDetailView = (projectId) => {
+  const project = PROJECTS.find(p => p.id === projectId);
+  if (!project) return renderHomeView();
+
+  if (activeP5Instance) {
+    activeP5Instance.remove();
+    activeP5Instance = null;
+  }
+
+  const isFav = favorites.includes(project.id);
+
+  mainContent.innerHTML = `
+    <div class="view-container">
+      <button onclick="navigateTo('/category/${project.category}')" class="btn-back">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        Back to ${project.category}
+      </button>
+
+      <div class="lab-workspace">
+        <div class="lab-header">
+          <div class="lab-info">
+            <h2 class="view-title-bold">${project.title}</h2>
+            <p class="view-subtitle">${project.description}</p>
+          </div>
+          <div class="lab-actions">
+            <button id="run-lab" class="btn-primary" style="height: fit-content; padding: 0.75rem 2rem; font-size: 12px;">Run Sketch</button>
+            <button id="stop-lab" class="btn-secondary" style="height: fit-content; padding: 0.75rem 2rem; font-size: 12px; margin-left: 0.75rem;">Stop Sketch</button>
+          </div>
+        </div>
+
+        <div class="lab-stage-container">
+          <div id="lab-canvas-container" class="lab-canvas-mount"></div>
+          
+          <button id="detail-fav-btn" class="btn-fav" style="top: 2rem; right: 2rem;">
+            <svg class="w-6 h-6 ${isFav ? 'filled' : ''}" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          </button>
+        </div>
+
+        <div class="lab-controls-panel">
+          <h3 class="sidebar-label" style="margin-bottom: 2rem;">Configuration</h3>
+          <div class="lab-controls-grid" id="controls-mount">
+            ${project.controls ? project.controls.map(c => `
+              <div class="control-group">
+                <div class="control-label-row">
+                  <label class="control-label" for="${c.id}">${c.id}</label>
+                  <span id="${c.id}-value" class="control-value">${c.default}</span>
+                </div>
+                <input 
+                  type="${c.type}" 
+                  id="${c.id}" 
+                  class="control-input" 
+                  min="${c.min}" 
+                  max="${c.max}" 
+                  step="${c.step}" 
+                  value="${c.default}"
+                />
+              </div>
+            `).join('') : '<p class="text-white/20 italic text-sm">No adjustable parameters for this sketch.</p>'}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const canvasMount = document.getElementById('lab-canvas-container');
+  const runBtn = document.getElementById('run-lab');
+  const favBtn = document.getElementById('detail-fav-btn');
+  
+  activeP5Instance = new p5((pInst) => {
+    project.sketch(pInst);
+    const originalSetup = pInst.setup;
+    pInst.setup = () => {
+      if (originalSetup) originalSetup();
+      pInst.redraw();
+      pInst.noLoop();
+    };
+  }, canvasMount);
+
+  favBtn.onclick = (e) => {
+    const isCurrentlyFav = favorites.includes(project.id);
+    if (isCurrentlyFav) {
+      favorites = favorites.filter(f => f !== project.id);
+      favBtn.querySelector('svg').classList.remove('filled');
+      favBtn.querySelector('svg').setAttribute('fill', 'none');
+    } else {
+      favorites.push(project.id);
+      favBtn.querySelector('svg').classList.add('filled');
+      favBtn.querySelector('svg').setAttribute('fill', 'currentColor');
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    renderSidebar();
+  };
+
+  const stopBtn = document.getElementById('stop-lab');
+
+  if (project.controls) {
+    project.controls.forEach(c => {
+      const input = document.getElementById(c.id);
+      const valueDisplay = document.getElementById(`${c.id}-value`);
+      if (input && valueDisplay) {
+        valueDisplay.textContent = input.value;
+        input.addEventListener('input', () => {
+          valueDisplay.textContent = input.value;
+        });
+      }
+    });
+  }
+
+  runBtn.onclick = () => {
+    if (activeP5Instance) {
+      activeP5Instance.loop();
+    }
+    
+    if (project.controls) {
+      const params = {};
+      project.controls.forEach(c => {
+        params[c.id] = parseFloat(document.getElementById(c.id).value);
+      });
+      
+      if (activeP5Instance.updateParams) {
+        activeP5Instance.updateParams(params);
+      } else {
+        // Fallback for sketches that don't support partial updates
+        activeP5Instance.remove();
+        activeP5Instance = new p5(project.sketch, canvasMount);
+      }
+    }
+  };
+
+  stopBtn.onclick = () => {
+    if (activeP5Instance) {
+      activeP5Instance.noLoop();
+    }
+  };
 };
 
 const renderHomeView = () => {
