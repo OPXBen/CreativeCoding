@@ -292,23 +292,43 @@ const renderProjectDetailView = (projectId) => {
   }
 
   runBtn.onclick = () => {
-    if (activeP5Instance) {
-      activeP5Instance.loop();
-    }
-    
+    const params = {};
     if (project.controls) {
-      const params = {};
       project.controls.forEach(c => {
         params[c.id] = parseFloat(document.getElementById(c.id).value);
       });
-      
-      if (activeP5Instance.updateParams) {
-        activeP5Instance.updateParams(params);
-      } else {
-        // Fallback for sketches that don't support partial updates
-        activeP5Instance.remove();
-        activeP5Instance = new p5(project.sketch, canvasMount);
+    }
+
+    if (project.oneShot) {
+      if (activeP5Instance) {
+        activeP5Instance.redraw();
+        activeP5Instance.noLoop();
       }
+      return;
+    }
+
+    if (activeP5Instance && activeP5Instance.updateParams) {
+      activeP5Instance.updateParams(params);
+      activeP5Instance.loop();
+      return;
+    }
+
+    if (project.controls) {
+      // Fallback for sketches that don't support partial updates.
+      activeP5Instance.remove();
+      activeP5Instance = new p5((pInst) => {
+        project.sketch(pInst);
+        const originalSetup = pInst.setup;
+        pInst.setup = () => {
+          if (originalSetup) originalSetup();
+          pInst.redraw();
+        };
+      }, canvasMount);
+      return;
+    }
+
+    if (activeP5Instance) {
+      activeP5Instance.loop();
     }
   };
 

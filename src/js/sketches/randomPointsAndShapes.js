@@ -135,7 +135,7 @@ export const randomPointsAndShapesSketch = (p) => {
   p.setup = () => {
     // We use a fixed size but could also use container dimensions
     // For general compatibility across the app's gallery, 600x600 is safe
-    p.createCanvas(600, 600);
+    p.createCanvas(1600, 800);
     p.background(20, 20, 20); // Darker background to match the theme
     p.noFill();
     

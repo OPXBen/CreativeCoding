@@ -1,7 +1,7 @@
 export const magnetSketch = (p) => {
   const step = 20;
   p.setup = () => {
-    p.createCanvas(400, 400);
+    p.createCanvas(1600, 800);
   };
   p.draw = () => {
     p.background(20);

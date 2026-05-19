@@ -1,6 +1,6 @@
 export const mondrianSketch = (p) => {
   p.setup = () => {
-    p.createCanvas(400, 400);
+    p.createCanvas(1600, 800);
     p.noLoop();
   };
   p.draw = () => {

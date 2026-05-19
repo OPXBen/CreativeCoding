@@ -3,7 +3,8 @@ import { orbitSketch } from '../sketches/orbit';
 import { starfieldSketch } from '../sketches/starfield';
 import { magnetSketch } from '../sketches/magnet';
 import { randomPointsAndShapesSketch } from '../sketches/randomPointsAndShapes';
-import { markovChainSketch } from '../sketches/markovChain';
+import { gameOfLifeSketch } from '../sketches/gameOfLife';
+import { lSystemSketch } from '../sketches/L-System';
 
 export const CATEGORIES = [
   {
@@ -34,8 +35,8 @@ export const CATEGORIES = [
   {
     id: 'Agents',
     title: 'Agents',
-    description: 'Autonomous entities following simple rules.',
-
+    description: 'Autonomous systems and emergent behaviors.',
+    previewUrl: 'https://picsum.photos/seed/agents/600/400'
   }
 
 ];
@@ -46,21 +47,28 @@ export const PROJECTS = [
     title: 'Mondrian Generator',
     category: 'Shapes',
     description: 'Procedural Mondrian-style grid composition.',
-    sketch: mondrianSketch
+    sketch: mondrianSketch,
+    oneShot: true
   },
   {
     id: 'motion-1',
     title: 'Orbiting Spheres',
     category: 'Motion',
     description: 'Gravitational dance of spheres around a center point.',
-    sketch: orbitSketch
+    sketch: orbitSketch,
+    controls: [
+      { id: 'amountOfBalls', label: 'Number of Orbits', type: 'range', min: 5, max: 50, step: 1, default: 15 }
+    ]
   },
   {
     id: 'particles-1',
     title: 'Starfield',
     category: 'Particles',
     description: 'Traveling through a field of distant stars.',
-    sketch: starfieldSketch
+    sketch: starfieldSketch,
+    controls: [
+      { id: 'maxStarSize', label: 'Max Star Size', type: 'range', min: 0, max: 75, step: 5, default: 15 }
+    ]
   },
   {
     id: 'interact-1',
@@ -82,12 +90,26 @@ export const PROJECTS = [
   },
   {
     id: 'agents-1',
-    title: 'Markov Chain Automaton',
+    title: 'L-Systems',
     category: 'Agents',
-    description: 'A cellular automaton based on Markov chain rules.',
-    sketch: markovChainSketch,
+    description: 'A cellular automaton based on L-System rules.',
+    sketch: lSystemSketch,
     controls: [
-      { id: 'framesPerUpdate', label: 'Speed', type: 'range', min: 1, max: 10, step: 1, default: 5 }
+      { id: 'framesPerUpdate', label: 'Speed', type: 'range', min: 1, max: 10, step: 1, default: 3 },
+      { id: 'maxGens', label: 'Generations', type: 'range', min: 1, max: 10, step: 1, default: 5 },
+      { id: 'angleMax', label: 'Max Turn Angle', type: 'range', min: 0, max: 360, step: 15, default: 45 }
+    ]
+  },
+
+    {
+    id: 'agents-2',
+    title: 'Game of Life',
+    category: 'Agents',
+    description: 'John Conway’s cellular automaton simulation.',
+    sketch: gameOfLifeSketch,
+    controls: [
+      { id: 'resolution', label: 'Resolution', type: 'range', min: 2, max: 40, step: 2, default: 10 },
+      { id: 'speed', label: 'Speed (Frame Delay)', type: 'range', min: 1, max: 20, step: 1, default: 5 }
     ]
   }
 ];
