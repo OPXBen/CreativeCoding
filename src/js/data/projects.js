@@ -5,6 +5,7 @@ import { magnetSketch } from '../sketches/magnet';
 import { randomPointsAndShapesSketch } from '../sketches/randomPointsAndShapes';
 import { gameOfLifeSketch } from '../sketches/gameOfLife';
 import { lSystemSketch } from '../sketches/L-System';
+import { markovChainSketch } from '../sketches/markovChain';
 
 export const CATEGORIES = [
   {
@@ -111,5 +112,17 @@ export const PROJECTS = [
       { id: 'resolution', label: 'Resolution', type: 'range', min: 2, max: 40, step: 2, default: 10 },
       { id: 'speed', label: 'Speed (Frame Delay)', type: 'range', min: 1, max: 20, step: 1, default: 5 }
     ]
+  },
+
+  {
+    id: 'agents-3',
+    title: 'Markov Chain Text generator',
+    category: 'Agents',
+    description: 'A Markov chain text generator that creates new sentences based on a source text.',
+    sketch: markovChainSketch, // This will be set to a p5 sketch function that implements the Markov chain text generator.
+    controls: [
+      { id: 'framesPerUpdate', label: 'Generation Speed', type: 'range', min: 1, max: 10, step: 1, default: 5 },
+      { id: 'maxWords', label: 'Max Words', type: 'range', min: 10, max: 500, step: 10, default: 160 }
+    ] // No controls for this one, but you could add some if you want (e.g., to change the source text or the generation speed).
   }
 ];

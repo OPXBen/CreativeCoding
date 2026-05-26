@@ -483,7 +483,41 @@ const renderSearchView = () => {
     }
 };
 
+// Theme toggle: simple light/dark using a `.light` class on documentElement
+const moonSvg = '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>';
+const sunSvg = '<svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10 3a1 1 0 011 1v1a1 1 0 11-2 0V4a1 1 0 011-1zm0 12a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM4.22 4.22a1 1 0 011.415 0l.707.707a1 1 0 01-1.414 1.414l-.708-.707a1 1 0 010-1.414zM14.657 14.657a1 1 0 011.415 0l.707.707a1 1 0 01-1.414 1.414l-.708-.707a1 1 0 010-1.414zM3 10a1 1 0 011-1h1a1 1 0 110 2H4a1 1 0 01-1-1zm12 0a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zM4.22 15.78a1 1 0 010-1.415l.707-.707a1 1 0 111.414 1.414l-.707.708a1 1 0 01-1.414 0zM14.657 5.343a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM10 6a4 4 0 100 8 4 4 0 000-8z"/></svg>';
+
+const themeToggleBtn = document.getElementById('toggle-theme');
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.documentElement.classList.add('light');
+    if (themeToggleBtn) themeToggleBtn.innerHTML = sunSvg;
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.classList.remove('light');
+    if (themeToggleBtn) themeToggleBtn.innerHTML = moonSvg;
+    localStorage.setItem('theme', 'dark');
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    applyTheme('light');
+  } else {
+    applyTheme('dark');
+  }
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const isLight = document.documentElement.classList.contains('light');
+      applyTheme(isLight ? 'dark' : 'light');
+    });
+  }
+}
+
 // --- Init ---
+initTheme();
 updateUI();
 renderSidebar();
 renderView();

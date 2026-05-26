@@ -15,6 +15,20 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+/* Light theme overrides (applies when `.light` is added to the documentElement) */
+.light {
+  --bg-main: var(--zinc-50);
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f3f4f6;
+  --border-color: rgba(2,6,23,0.06);
+  --text-main: var(--zinc-900);
+  --text-muted: rgba(15, 23, 42, 0.6);
+  --indigo-400: #6366f1;
+  --indigo-500: #4f46e5;
+  --indigo-600: #4338ca;
+}
+
 * {
   box-sizing: border-box;
 }
