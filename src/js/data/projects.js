@@ -106,7 +106,7 @@ export const PROJECTS = [
     id: 'agents-2',
     title: 'Game of Life',
     category: 'Agents',
-    description: 'John Conway’s cellular automaton simulation.',
+    description: 'John Conways cellular automaton simulation.',
     sketch: gameOfLifeSketch,
     controls: [
       { id: 'resolution', label: 'Resolution', type: 'range', min: 2, max: 40, step: 2, default: 10 },
@@ -121,8 +121,8 @@ export const PROJECTS = [
     description: 'A Markov chain text generator that creates new sentences based on a source text.',
     sketch: markovChainSketch, // This will be set to a p5 sketch function that implements the Markov chain text generator.
     controls: [
-      { id: 'framesPerUpdate', label: 'Generation Speed', type: 'range', min: 1, max: 10, step: 1, default: 5 },
-      { id: 'maxWords', label: 'Max Words', type: 'range', min: 10, max: 500, step: 10, default: 160 }
+      { id: 'frameRate', label: 'Generation Speed', type: 'range', min: 1, max: 10, step: 1, default: 5 },
+      { id: 'maxWords', label: 'Max Words', type: 'range', min: 0, max: 500, step: 10, default: 160 }
     ] // No controls for this one, but you could add some if you want (e.g., to change the source text or the generation speed).
   }
 ];

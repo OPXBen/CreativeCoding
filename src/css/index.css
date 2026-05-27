@@ -49,13 +49,13 @@ body::selection {
 }
 
 .icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 5%;
+  height: 5%;
 }
 
 .icon-large {
-  width: 2rem;
-  height: 2rem;
+  width: 10%;
+  height: 10%;
 }
 
 .layout-root {
@@ -65,8 +65,8 @@ body::selection {
 }
 
 .header {
-  height: 5rem;
-  padding: 0 2rem;
+  height: 7%;
+  padding: 2%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,15 +82,15 @@ body::selection {
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 3%;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
 }
 
 .logo-box {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 15%;
+  height: 7%;
   background: linear-gradient(to bottom right, var(--indigo-500), #9333ea);
   border-radius: 0.5rem;
   display: flex;
