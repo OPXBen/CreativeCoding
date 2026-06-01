@@ -6,6 +6,7 @@ import { randomPointsAndShapesSketch } from '../sketches/randomPointsAndShapes';
 import { gameOfLifeSketch } from '../sketches/gameOfLife';
 import { lSystemSketch } from '../sketches/L-System';
 import { markovChainSketch } from '../sketches/markovChain';
+import { wordCloudSketch } from '../sketches/wordCloud';
 
 export const CATEGORIES = [
   {
@@ -124,5 +125,16 @@ export const PROJECTS = [
       { id: 'frameRate', label: 'Generation Speed', type: 'range', min: 1, max: 10, step: 1, default: 5 },
       { id: 'maxWords', label: 'Max Words', type: 'range', min: 0, max: 500, step: 10, default: 160 }
     ] // No controls for this one, but you could add some if you want (e.g., to change the source text or the generation speed).
+  },
+
+  {
+    id: 'agents-4',
+    title: 'Word Cloud Generator',
+    category: 'Agents',
+    description: 'A dynamic word cloud that visualizes the frequency of words in a given text.',
+    sketch: wordCloudSketch, // This will be set to a p5 sketch function that implements the word cloud generator.
+    controls: [
+      { id: 'textInput', label: 'Input Text', type: 'textarea', default: 'Enter your text here to generate a word cloud.' }
+    ]
   }
 ];

@@ -28,7 +28,7 @@ L-System✅
 
 TODO5
 • Markov chain generator with shakespear.txt as input✅
-• Wordcloud
+• Wordcloud✅
 ----------------------------------------------------------
 
 TODO6
