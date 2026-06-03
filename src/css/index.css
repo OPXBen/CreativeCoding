@@ -248,12 +248,13 @@ body::selection {
 }
 
 .sidebar-label {
-  font-size: 10px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  opacity: 0.4;
+  color: var(--text-main);
   margin-bottom: 1rem;
   padding: 0 0.5rem;
+  font-weight: 600;
 }
 
 .side-link {

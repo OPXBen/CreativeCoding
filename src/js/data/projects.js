@@ -7,6 +7,7 @@ import { gameOfLifeSketch } from '../sketches/gameOfLife';
 import { lSystemSketch } from '../sketches/L-System';
 import { markovChainSketch } from '../sketches/markovChain';
 import { wordCloudSketch } from '../sketches/wordCloud';
+import { imageManipulationSketch } from '../sketches/imageManipulation';
 
 export const CATEGORIES = [
   {
@@ -34,12 +35,18 @@ export const CATEGORIES = [
     previewUrl: new URL('../../images/interactions.jpg', import.meta.url).href
   },
 
+  {id: 'images',
+    title: 'Images',
+    description: 'Manipulating and generating images through code.',
+    previewUrl: new URL('../../images/images.jpg', import.meta.url).href
+  },
+
   {
     id: 'Agents',
     title: 'Agents',
     description: 'Autonomous systems and emergent behaviors.',
-    previewUrl: 'https://picsum.photos/seed/agents/600/400'
-  }
+    previewUrl: new URL('../../images/kibot.jpg', import.meta.url).href
+  } 
 
 ];
 
@@ -90,6 +97,19 @@ export const PROJECTS = [
       { id: 'pointsPerGen', label: 'Complexity', type: 'range', min: 5, max: 50, step: 5, default: 10 }
     ]
   },
+
+  {
+    id: 'images-1',
+    title: 'Image Manipulation',
+    category: 'Images',
+    description: 'Applying various filters and effects to images.',
+    sketch: imageManipulationSketch,
+    controls: [
+      { id: 'filterType', label: 'Filter Type', type: 'select', options: ['Sort Pixels', 'Combine Images', 'Glitch Effect', 'Random Dithering'], default: 'Sort Pixels' },
+      { id: 'strength', label: 'Effect Strength', type: 'range', min: 0, max: 100, step: 1, default: 50 }
+    ]
+  },
+
   {
     id: 'agents-1',
     title: 'L-Systems',
